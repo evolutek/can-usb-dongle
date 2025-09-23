@@ -97,7 +97,10 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USB_PCD_Init();
   /* USER CODE BEGIN 2 */
-
+  queue_init(&from_usb);
+  queue_init(&to_usb);
+  queue_init(&from_can);
+  queue_init(&to_can);
   /* USER CODE END 2 */
 
   /* Infinite loop */

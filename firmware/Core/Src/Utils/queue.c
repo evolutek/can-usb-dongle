@@ -9,6 +9,19 @@
 
 #include <string.h> //memcpy
 
+queue_t from_usb;
+queue_t to_usb;
+queue_t from_can;
+queue_t to_can;
+
+void queue_init(queue_t *q)
+{
+    q->size = 0;
+    q->head = 0;
+    q->tail = 0;
+    memset(q->buf, 0, QUEUE_SIZE);
+}
+
 int queue_enqueue(queue_t *q, void *elt, size_t elt_size, overflow_handler_t error_handler)
 {
 	if (q->size + elt_size > QUEUE_SIZE)
@@ -53,4 +66,9 @@ int queue_dequeue(queue_t *q, void *output, size_t elt_size)
 	q->size -= elt_size;
 
 	return 0;
+}
+
+void queue_default_overflow_handler(queue_t* q)
+{
+	Error_Handler();
 }
