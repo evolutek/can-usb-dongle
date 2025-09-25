@@ -21,11 +21,6 @@ typedef struct queue_s
 	size_t tail;				//offset in bytes of the next elt to dequeue
 } queue_t;
 
-extern queue_t from_usb_q; // queue_t<?>
-extern queue_t to_usb_q;   // queue_t<?>
-extern queue_t from_can_q; // queue_t<can_rx_msg_t>
-extern queue_t to_can_q;   // queue_t<?>
-
 #define PQUEUE_EMPTY(q) (q->size == 0)
 #define QUEUE_EMPTY(q) (q.size == 0)
 

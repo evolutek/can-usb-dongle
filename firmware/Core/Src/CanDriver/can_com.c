@@ -9,6 +9,7 @@
 #define SRC_CANDRIVER_CAN_COM_C_
 
 #include "CanDriver/can_com.h"
+#include "Utils/global.h"
 
 #include <string.h> //memcpy
 
@@ -57,11 +58,23 @@ can_tx_msg_t can_tx_msg_create(uint8_t prio,
 	return msg; //big copy
 }
 
-void can_send_msg(FDCAN_HandleTypeDef* hfdcan, can_tx_msg_t* msg)
+void can_send_msg(FDCAN_HandleTypeDef* hfdcan, const can_tx_msg_t* msg)
 {
 	if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK)
 	{
 	    Error_Handler();
+	}
+}
+
+void can_flush_msg(FDCAN_HandleTypeDef* hfdcan, queue_t* q)
+{
+	while(!PQUEUE_EMPTY(q))
+	{
+		can_tx_msg_t msg;
+		if(queue_dequeue(q, &msg, sizeof(can_tx_msg_t)))
+			Error_Handler();
+
+		can_send_msg(hfdcan, &msg);
 	}
 }
 

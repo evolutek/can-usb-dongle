@@ -20,14 +20,14 @@
 #define CAN_RX_IT			FDCAN_IT_RX_FIFO0_NEW_MESSAGE
 
 /**
-  * @brief setup the filters of the CAN based on the config.h
+  * @brief setup the filters of the CAN
   * @param hcan is the can handle
   * @retval None
   */
 void can_setup_filters(FDCAN_HandleTypeDef *hcan);
 
 /**
-  * @brief setup the CAN based on the config.h
+  * @brief setup the CAN
   * @param hcan is the can handle
   * @param filters is the reference to the filter which will be set
   * @retval None
