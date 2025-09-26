@@ -18,7 +18,7 @@ void can_setup_filters(FDCAN_HandleTypeDef *hcan)
 	filters.FilterID1 = CAN_FILTER_ID1;
 	filters.FilterID2 = CAN_FILTER_ID2;  // mask 0 => accept all IDs
 
-	HAL_FDCAN_ConfigFilter(hcan, filters);
+	HAL_FDCAN_ConfigFilter(hcan, &filters);
 }
 
 void can_setup(FDCAN_HandleTypeDef *hcan)

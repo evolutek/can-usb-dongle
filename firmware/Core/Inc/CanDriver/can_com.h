@@ -73,7 +73,7 @@ can_tx_msg_t can_tx_msg_create(uint8_t prio,
 								uint8_t src_board_type,
 								uint8_t src_board_id,
 								uint8_t tracking,
-								uint8_t data);
+								uint8_t data[64]);
 
 void can_send_msg(FDCAN_HandleTypeDef* hfdcan, const can_tx_msg_t* msg);
 

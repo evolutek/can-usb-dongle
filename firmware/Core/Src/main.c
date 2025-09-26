@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Utils/global.h"
+#include "Utils/mainloop.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

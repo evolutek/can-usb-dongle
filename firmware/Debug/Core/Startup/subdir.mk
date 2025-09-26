@@ -7,21 +7,30 @@
 S_SRCS += \
 ../Core/Startup/startup_stm32g491keux.s 
 
+C_SRCS += \
+../Core/Startup/queue.c 
+
 OBJS += \
+./Core/Startup/queue.o \
 ./Core/Startup/startup_stm32g491keux.o 
 
 S_DEPS += \
 ./Core/Startup/startup_stm32g491keux.d 
 
+C_DEPS += \
+./Core/Startup/queue.d 
+
 
 # Each subdirectory must supply rules for building sources it contributes
+Core/Startup/%.o Core/Startup/%.su Core/Startup/%.cyclo: ../Core/Startup/%.c Core/Startup/subdir.mk
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G491xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 Core/Startup/%.o: ../Core/Startup/%.s Core/Startup/subdir.mk
 	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
 
 clean: clean-Core-2f-Startup
 
 clean-Core-2f-Startup:
-	-$(RM) ./Core/Startup/startup_stm32g491keux.d ./Core/Startup/startup_stm32g491keux.o
+	-$(RM) ./Core/Startup/queue.cyclo ./Core/Startup/queue.d ./Core/Startup/queue.o ./Core/Startup/queue.su ./Core/Startup/startup_stm32g491keux.d ./Core/Startup/startup_stm32g491keux.o
 
 .PHONY: clean-Core-2f-Startup
 

@@ -5,16 +5,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Core/Src/Utils/mainloop.c \
-../Core/Src/Utils/queue.c 
+../Core/Src/Utils/global.c \
+../Core/Src/Utils/mainloop.c 
 
 OBJS += \
-./Core/Src/Utils/mainloop.o \
-./Core/Src/Utils/queue.o 
+./Core/Src/Utils/global.o \
+./Core/Src/Utils/mainloop.o 
 
 C_DEPS += \
-./Core/Src/Utils/mainloop.d \
-./Core/Src/Utils/queue.d 
+./Core/Src/Utils/global.d \
+./Core/Src/Utils/mainloop.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -24,7 +24,7 @@ Core/Src/Utils/%.o Core/Src/Utils/%.su Core/Src/Utils/%.cyclo: ../Core/Src/Utils
 clean: clean-Core-2f-Src-2f-Utils
 
 clean-Core-2f-Src-2f-Utils:
-	-$(RM) ./Core/Src/Utils/mainloop.cyclo ./Core/Src/Utils/mainloop.d ./Core/Src/Utils/mainloop.o ./Core/Src/Utils/mainloop.su ./Core/Src/Utils/queue.cyclo ./Core/Src/Utils/queue.d ./Core/Src/Utils/queue.o ./Core/Src/Utils/queue.su
+	-$(RM) ./Core/Src/Utils/global.cyclo ./Core/Src/Utils/global.d ./Core/Src/Utils/global.o ./Core/Src/Utils/global.su ./Core/Src/Utils/mainloop.cyclo ./Core/Src/Utils/mainloop.d ./Core/Src/Utils/mainloop.o ./Core/Src/Utils/mainloop.su
 
 .PHONY: clean-Core-2f-Src-2f-Utils
 

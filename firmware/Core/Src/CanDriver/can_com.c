@@ -32,7 +32,7 @@ can_tx_msg_t can_tx_msg_create(uint8_t prio,
 								uint8_t src_board_type,
 								uint8_t src_board_id,
 								uint8_t tracking,
-								uint8_t data)
+								uint8_t data[64])
 {
 	can_tx_msg_t msg;
 	msg.TxHeader.Identifier = 0;
@@ -40,9 +40,9 @@ can_tx_msg_t can_tx_msg_create(uint8_t prio,
 	SET(msg.TxHeader.Identifier, OFFSET_MSG_TYPE, msg_type);
 	SET(msg.TxHeader.Identifier, OFFSET_MSG_ID, msg_id);
 	SET(msg.TxHeader.Identifier, OFFSET_DST_BOARD_TYPE, dst_board_type);
-	SET(msg.TxHeader.Identifier, OFFSET_DST_BOARD_ID, dst_board_type_id);
+	SET(msg.TxHeader.Identifier, OFFSET_DST_BOARD_ID, dst_board_id);
 	SET(msg.TxHeader.Identifier, OFFSET_SRC_BOARD_TYPE, src_board_type);
-	SET(msg.TxHeader.Identifier, OFFSET_SRC_BOARD_ID, src_board_type_id);
+	SET(msg.TxHeader.Identifier, OFFSET_SRC_BOARD_ID, src_board_id);
 	SET(msg.TxHeader.Identifier, OFFSET_TRACKING, tracking);
 
 	msg.TxHeader.IdType = FDCAN_STANDARD_ID;
@@ -60,9 +60,9 @@ can_tx_msg_t can_tx_msg_create(uint8_t prio,
 
 void can_send_msg(FDCAN_HandleTypeDef* hfdcan, const can_tx_msg_t* msg)
 {
-	if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK)
+	if (HAL_FDCAN_AddMessageToTxFifoQ(hfdcan, &msg->TxHeader, &msg->TxData) != HAL_OK)
 	{
-	    Error_Handler();
+	    error_handler();
 	}
 }
 
@@ -72,7 +72,7 @@ void can_flush_msg(FDCAN_HandleTypeDef* hfdcan, queue_t* q)
 	{
 		can_tx_msg_t msg;
 		if(queue_dequeue(q, &msg, sizeof(can_tx_msg_t)))
-			Error_Handler();
+			error_handler();
 
 		can_send_msg(hfdcan, &msg);
 	}

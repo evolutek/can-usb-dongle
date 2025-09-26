@@ -25,4 +25,8 @@ extern queue_t from_can_q; // queue_t<can_rx_msg_t>	//FILED with interruptions
 extern queue_t to_usb_q[PRIO_LEVELS];   // queue_t<uint8_t>
 extern queue_t to_can_q[PRIO_LEVELS];   // queue_t<can_tx_msg_t>
 
+extern volatile uint8_t usb_tx_is_busy;
+
+void error_handler();
+
 #endif /* INC_UTILS_GLOBAL_H_ */

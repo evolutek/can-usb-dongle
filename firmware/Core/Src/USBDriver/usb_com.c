@@ -10,6 +10,7 @@
 #include "Utils/queue.h"
 #include "Utils/global.h"
 
+volatile uint8_t usb_tx_is_busy = 0;
 
 void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 {
@@ -22,10 +23,30 @@ void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
     }
 }
 
-void usb_send_msg(PCD_HandleTypeDef *hpcd, const uint8_t* data, size_t size)
+void HAL_PCD_DataInStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 {
-	while (hpcd->IN_ep[1].is_in_busy);
-
-	HAL_PCD_EP_Transmit(hpcd, ENDPOINT1_IN, data, len);
+    if (epnum == 1)
+    {
+        usb_tx_is_busy = 0;
+    }
 }
 
+void usb_send_msg(PCD_HandleTypeDef *hpcd, uint8_t* data, size_t size)
+{
+	while (usb_tx_is_busy);
+	usb_tx_is_busy = 1;
+
+	HAL_PCD_EP_Transmit(hpcd, ENDPOINT1_IN, data, size);
+}
+
+void usb_flush_msg(PCD_HandleTypeDef *hpcd, queue_t* q)
+{
+	while(!PQUEUE_EMPTY(q))
+	{
+		uint8_t msg[USB_MSG_SIZE];
+		if(queue_dequeue(q, &msg, sizeof(usb_rx_buffer)))
+			error_handler();
+
+		usb_send_msg(hpcd, msg, sizeof(msg));
+	}
+}
