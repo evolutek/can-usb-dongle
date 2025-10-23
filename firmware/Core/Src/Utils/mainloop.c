@@ -36,9 +36,11 @@ void mainloop(FDCAN_HandleTypeDef* hfdcan, PCD_HandleTypeDef *hpcd)
 	// High prio first
 	for(size_t prio_level = 0; prio_level < PRIO_LEVELS; prio_level++)
 	{
+		//read from usb
+		usb_get_and_parse(&from_usb_can[prio_level], &to_can_q[prio_level]);
+
 		can_flush_msg(hfdcan, &to_can_q[prio_level]);
-		//from_usb_to_can
-		//from_can_to_usb
-		usb_flush_msg(hpcd, &to_usb_q);
+
+		usb_flush_msg(hpcd, &to_usb_q[prio_level]);
 	}
 }

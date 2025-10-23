@@ -15,7 +15,7 @@
 
 #define PRIO_LEVELS	2
 
-#define USB_MSG_SIZE	64
+#define USB_MSG_SIZE	64U
 
 extern uint8_t usb_rx_buffer[USB_MSG_SIZE];
 
